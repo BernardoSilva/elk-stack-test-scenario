@@ -222,6 +222,34 @@ services:
       timeout: 10s
       retries: 120
 
+  # ---- wordpress ----
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - wordpress_data:/var/www/html
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
 volumes:
   certs:
     driver: local
@@ -232,4 +260,8 @@ volumes:
   esdata03:
     driver: local
   kibanadata:
+    driver: local
+  db_data:
+    driver: local
+  wordpress_data:
     driver: local
