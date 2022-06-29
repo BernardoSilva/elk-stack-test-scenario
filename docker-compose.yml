@@ -209,8 +209,6 @@ volumes:
     driver: local
   esdata02:
     driver: local
-  esdata03:
-    driver: local
   kibanadata:
     driver: local
   db_data:
