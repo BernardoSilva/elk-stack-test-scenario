@@ -158,6 +158,10 @@ services:
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      # https://github.com/elastic/kibana/issues/57773
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_SECURITY_ENCRYPTIONKEY=${ENCRYPTION_KEY}
+      - XPACK_REPORTING_ENCRYPTIONKEY=${ENCRYPTION_KEY}
       #- xpack.security.encryptionKey=${ENCRYPTION_KEY}
       #- xpack.encryptedSavedObjects.encryptionKey=${ENCRYPTION_KEY}
       - xpack.encryptedSavedObjects.encryptionKey=11e389a67054ee078e3c0d048c92c8b6
