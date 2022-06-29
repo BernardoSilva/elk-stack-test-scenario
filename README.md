@@ -93,28 +93,58 @@ systemctl restart elastic-agent
 
 
 
+# test connection
+https://www.michael-wutzke.com/curl-and-elasticsearch/
+curl -u elastic:CHANGEME https://es01:9200 -k
+curl -u elastic:CHANGEME https://es01:9200 --cacert /usr/share/elasticsearch/certs/ca/ca.crt
+curl -u elastic:CHANGEME https://es01:9200
+
+
+
+
+# Wordpress site
+
+http://localhost:8000/
+
+## setup
+
+
+### access wordpress container
+docker exec -it myproject-wordpress-1 /bin/bash
+
+
+### add ca certificate as trusted
+
+cp /usr/share/elasticsearch/config/certs/ca/ca.crt /usr/local/share/ca-certificates/
+update-ca-certificates
+
+
+### install agent
+
+apt update
+apt install vim
+
+apt update
+apt install vim
+
 
 cd /opt
 curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.2.3-linux-x86_64.tar.gz
 tar xzvf elastic-agent-8.2.3-linux-x86_64.tar.gz
 cd elastic-agent-8.2.3-linux-x86_64
 
+vim elastic-agent.yaml
+**copy config from "add endpoint" wizard in Kibana.**
+
+
 ./elastic-agent install
 
-# start agent after configuration
-
+**debug agent with config**
 ./elastic-agent -c elastic-agent.yml -e
 
 
-# access wordpress
-docker exec -it myproject-wordpress-1 /bin/bash
+### how to start and stop agent in wordpress machine
 
-
-apt update
-apt install vim
-
-vim elastic-agent.yaml
-# copy config from "add endpoint" wizard in Kibana.
 
 
 
@@ -123,33 +153,6 @@ https://www.elastic.co/guide/en/fleet/current/start-stop-elastic-agent.html
 service elastic-agent status
 service elastic-agent start
 service elastic-agent stop
-
-
-# test
-https://www.michael-wutzke.com/curl-and-elasticsearch/
-curl -u elastic:CHANGEME https://es01:9200 -k
-curl -u elastic:CHANGEME https://es01:9200 --cacert /usr/share/elasticsearch/certs/ca/ca.crt
-curl -u elastic:CHANGEME https://es01:9200
-
-
-
-# @todo add elk certificate as trusted
-
-
-
-
-
-
-# wordpress site
-user: gars
-pass: gars123!
-http://localhost:8000/
-
-
-
-# on wordpress machine
-cp /usr/share/elasticsearch/config/certs/ca/ca.crt /usr/local/share/ca-certificates/
-update-ca-certificates
 
 
 
